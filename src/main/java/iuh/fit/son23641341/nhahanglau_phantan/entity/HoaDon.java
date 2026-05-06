@@ -12,6 +12,8 @@ public class HoaDon {
     private String maKhuyenMai;  
     private String loaiHoaDon;    
     private Time gioLapHoaDon;
+    private KhachHang khachHang;
+    private KhuyenMai khuyenMai;
 
     // ================= CONSTRUCTORS =================
 
@@ -135,6 +137,22 @@ public class HoaDon {
 
     public void setGioLapHoaDon(Time gioLapHoaDon) {
         this.gioLapHoaDon = gioLapHoaDon;
+    }
+
+    public KhachHang getKhachHang() {
+        return khachHang;
+    }
+
+    public void setKhachHang(KhachHang khachHang) {
+        this.khachHang = khachHang;
+    }
+
+    public KhuyenMai getKhuyenMai() {
+        return khuyenMai;
+    }
+
+    public void setKhuyenMai(KhuyenMai khuyenMai) {
+        this.khuyenMai = khuyenMai;
     }
 
     @Override

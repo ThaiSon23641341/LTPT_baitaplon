@@ -6,21 +6,22 @@ import iuh.fit.son23641341.nhahanglau_phantan.mock.MockData;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import iuh.fit.son23641341.nhahanglau_phantan.dao.PhieuDat_DAO;
 
 import iuh.fit.son23641341.nhahanglau_phantan.dao.KhachHang_DAO;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 
 // NOTE: Controller now uses mock data; database logic removed.
 public class PhieuDatBan_Ctr {
     private static PhieuDatBan_Ctr instance; // Singleton instance
     private ArrayList<PhieuDatBan> danhSachPhieu;
     private int maPhieuTiepTheo;
-    private Map<Integer, ArrayList<ChiTietDonHang>> gioHangTamThoi;
+    private Map<Integer, ArrayList<ChiTietDatMon>> gioHangTamThoi;
     private Map<Integer, iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai> khuyenMaiTamThoi; // Lưu khuyến mãi đã chọn cho từng bàn
 
     // Private constructor
@@ -185,7 +186,7 @@ public class PhieuDatBan_Ctr {
 
     // Tạo phiếu đặt
     public PhieuDatBan taoPhieuDat(String tenKH, String sdt, String ngayDat, String gioDat, String phuongThuc,
-            String emailDat,ArrayList<Integer> danhSachBan, ArrayList<ChiTietDonHang> danhSachMon, double giamGia) {
+            String emailDat, ArrayList<Integer> danhSachBan, List<? extends ChiTietDatMon> danhSachMon, double giamGia) {
         String maPhieu = taoMaPhieu(ngayDat, gioDat, sdt);
         String maKhachHang = null;
         // Nếu sdt không rỗng, thử lấy mã khách hàng từ DB
@@ -194,18 +195,20 @@ public class PhieuDatBan_Ctr {
             maKhachHang = khachHangDAO.getMaKhachHangBySDT(sdt);
         }
 
-        thongTinNhanVien_ctrl ctrl = new thongTinNhanVien_ctrl();
-
-        Nhanvien nvHienTai = User_Ctr.getInstance().getNhanVienHienTai();
+        NhanVien nvHienTai = User_Ctr.getInstance().getNhanVienHienTai();
+        ArrayList<ChiTietDatMon> danhSachMonCopy = new ArrayList<>();
+        if (danhSachMon != null) {
+            danhSachMonCopy.addAll(danhSachMon);
+        }
         PhieuDatBan phieu = new PhieuDatBan(maPhieu, maKhachHang, tenKH, sdt, emailDat, "Đặt trước",
                 nvHienTai.getManv(), ngayDat,
                 gioDat,
-                new Timestamp(System.currentTimeMillis()), giamGia, danhSachMon, danhSachBan);
+                new Timestamp(System.currentTimeMillis()), giamGia, danhSachMonCopy, danhSachBan);
 
         // Tính tổng tiền món ăn
         double tongTienMonAn = 0;
         if (danhSachMon != null) {
-            for (ChiTietDonHang ct : danhSachMon) {
+            for (ChiTietDatMon ct : danhSachMonCopy) {
                 tongTienMonAn += ct.getMonAn().getGia() * ct.getSoLuong();
             }
         }
@@ -223,14 +226,18 @@ public class PhieuDatBan_Ctr {
     }
 
     // 12. Cập nhật danh sách món ăn cho bàn
-    public void capNhatDanhSachMonAn(int maBan, ArrayList<ChiTietDonHang> danhSachMon) {
+    public void capNhatDanhSachMonAn(int maBan, List<? extends ChiTietDatMon> danhSachMon) {
+        ArrayList<ChiTietDatMon> danhSachMonCopy = new ArrayList<>();
+        if (danhSachMon != null) {
+            danhSachMonCopy.addAll(danhSachMon);
+        }
         PhieuDatBan phieu = timPhieuTheoMaBan(maBan);
         if (phieu != null) {
             // Nếu là phiếu đã tồn tại (Đặt trước, Đang sử dụng) -> cập nhật trực tiếp
-            phieu.setDanhSachMonAn(danhSachMon);
+            phieu.setDanhSachMonAn(danhSachMonCopy);
         } else {
             // Nếu là phiếu mới (chưa có trong CSDL) -> lưu vào giỏ hàng tạm
-            gioHangTamThoi.put(maBan, danhSachMon);
+            gioHangTamThoi.put(maBan, danhSachMonCopy);
         }
     }
 
@@ -239,13 +246,13 @@ public class PhieuDatBan_Ctr {
         gioHangTamThoi.remove(maBan);
     }
 
-    public ArrayList<ChiTietDonHang> layDanhSachMonAnChoBan(int maBan) {
+    public ArrayList<ChiTietDatMon> layDanhSachMonAnChoBan(int maBan) {
         PhieuDatBan phieu = timPhieuTheoMaBan(maBan);
         if (phieu != null) {
             return phieu.getDanhSachMonAn();
         }
         // Nếu chưa có phiếu, trả về giỏ hàng tạm thời nếu có
-        ArrayList<ChiTietDonHang> gioHang = gioHangTamThoi.get(maBan);
+        ArrayList<ChiTietDatMon> gioHang = gioHangTamThoi.get(maBan);
         if (gioHang != null) {
             return gioHang;
         }
@@ -298,9 +305,13 @@ public class PhieuDatBan_Ctr {
     }
 
     // 19. Cập nhật món ăn của phiếu đặt
-    public boolean capNhatMonAnCuaPhieu(String maPhieu, ArrayList<ChiTietDonHang> danhSachMon) {
+    public boolean capNhatMonAnCuaPhieu(String maPhieu, List<? extends ChiTietDatMon> danhSachMon) {
+        ArrayList<ChiTietDatMon> danhSachMonCopy = new ArrayList<>();
+        if (danhSachMon != null) {
+            danhSachMonCopy.addAll(danhSachMon);
+        }
         PhieuDat_DAO phieuDAO = new PhieuDat_DAO();
-        return phieuDAO.capNhatMonAnCuaPhieu(maPhieu, danhSachMon);
+        return phieuDAO.capNhatMonAnCuaPhieu(maPhieu, danhSachMonCopy);
     }
 
     // 20. Cập nhật trạng thái phiếu đặt

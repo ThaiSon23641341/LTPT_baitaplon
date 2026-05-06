@@ -21,6 +21,8 @@ public class PhieuDatBan {
     private String emailDat;
     private String trangThai;
     private String maNhanVien;
+    private int soNguoi;
+    private NhanVien nhanVien;
     private String ngayDat;
     private String gioDat; 
     private String phuongThucThanhToan; // Thêm phương thức thanh toán
@@ -32,7 +34,7 @@ public class PhieuDatBan {
     private double tongTien; // Tổng tiền cuối cùng (để lưu DB)
 
     // --- CÁC DANH SÁCH ---
-    private ArrayList<ChiTietDonHang> danhSachMonAn;
+    private ArrayList<ChiTietDatMon> danhSachMonAn;
     private ArrayList<Integer> danhSachBanDaChon; // Dùng khi đặt nhiều bàn
 
     // ================= CONSTRUCTORS =================
@@ -49,7 +51,7 @@ public class PhieuDatBan {
     // Construtor khởi tạo của t đâu???? học hướng đối tượng chưa z ??? 
 	public PhieuDatBan(String maPhieu, String maKhachHang, String tenKhachDat, String sdtDat,
 			String emailDat, String trangThai, String maNhanVien, String ngayDat, String gioDat, Timestamp thoiGianDat,
-			 double giamGia, ArrayList<ChiTietDonHang> danhSachMonAn,
+			 double giamGia, ArrayList<ChiTietDatMon> danhSachMonAn,
 			ArrayList<Integer> danhSachBanDaChon) {
 		
 		
@@ -64,7 +66,7 @@ public class PhieuDatBan {
 		this.gioDat = gioDat;
 		this.thoiGianDat = thoiGianDat;
 		this.giamGia = giamGia;
-		if (trangThai == "Đặt trước") {
+		if ("Đặt trước".equalsIgnoreCase(trangThai)) {
 		this.tienCoc = tinhTienCoc();
 		}
 		this.danhSachMonAn = danhSachMonAn != null ? danhSachMonAn : new ArrayList<>();
@@ -164,6 +166,27 @@ public class PhieuDatBan {
         this.maNhanVien = maNhanVien;
     }
 
+    public int getSoNguoi() {
+        return soNguoi;
+    }
+
+    public void setSoNguoi(int soNguoi) {
+        if (soNguoi > 0) {
+            this.soNguoi = soNguoi;
+        }
+    }
+
+    public NhanVien getNhanVien() {
+        return nhanVien;
+    }
+
+    public void setNhanVien(NhanVien nhanVien) {
+        this.nhanVien = nhanVien;
+        if (nhanVien != null) {
+            this.maNhanVien = nhanVien.getManv();
+        }
+    }
+
     public String getNgayDat() {
         return ngayDat;
     }
@@ -241,13 +264,13 @@ public class PhieuDatBan {
         setDanhSachBanDaChon(list);
     }
 
-    public ArrayList<ChiTietDonHang> getDanhSachMonAn() {
+    public ArrayList<ChiTietDatMon> getDanhSachMonAn() {
         if (this.danhSachMonAn == null)
             this.danhSachMonAn = new ArrayList<>();
         return this.danhSachMonAn;
     }
 
-    public void setDanhSachMonAn(ArrayList<ChiTietDonHang> danhSachMonAn) {
+    public void setDanhSachMonAn(ArrayList<ChiTietDatMon> danhSachMonAn) {
         this.danhSachMonAn = danhSachMonAn;
     }
 
@@ -269,7 +292,7 @@ public class PhieuDatBan {
         if (this.danhSachMonAn == null)
             return 0;
         double tong = 0;
-        for (ChiTietDonHang ct : danhSachMonAn) {
+        for (ChiTietDatMon ct : danhSachMonAn) {
             tong += ct.getMonAn().getGia() * ct.getSoLuong();
         }
         return tong;
@@ -298,10 +321,10 @@ public class PhieuDatBan {
      * Overload: Tính tiền cọc dựa trên danh sách món truyền vào (Dùng cho GUI tính
      * nháp)
      */
-    public double tinhTienCoc(ArrayList<ChiTietDonHang> dsMonTam) {
+    public double tinhTienCoc(ArrayList<ChiTietDatMon> dsMonTam) {
         double tongMon = 0;
         if (dsMonTam != null) {
-            for (ChiTietDonHang ct : dsMonTam) {
+            for (ChiTietDatMon ct : dsMonTam) {
                 tongMon += ct.getMonAn().getGia() * ct.getSoLuong();
             }
         }
@@ -334,3 +357,4 @@ public class PhieuDatBan {
 				+ ", danhSachBanDaChon=" + danhSachBanDaChon + "]";
 	}
 }
+

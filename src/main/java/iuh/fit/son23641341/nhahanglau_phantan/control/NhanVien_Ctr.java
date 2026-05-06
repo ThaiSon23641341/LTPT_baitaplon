@@ -2,13 +2,13 @@ package iuh.fit.son23641341.nhahanglau_phantan.control;
 
 import java.util.ArrayList;
 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 
 // NOTE: Controller now uses mock data; database logic removed.
 public class NhanVien_Ctr {
 
-	 private  final ArrayList<Nhanvien> danhSachNhanVien;
-	 
+	 private  final ArrayList<NhanVien> danhSachNhanVien;
+
 	 
 	    private NhanVien_Ctr() throws Exception {
 	    		        this.danhSachNhanVien = new ArrayList<>();
@@ -21,11 +21,10 @@ public class NhanVien_Ctr {
 		}
 
 	    
-	    public ArrayList<Nhanvien> getDanhSachNhanVien() {
+	    public ArrayList<NhanVien> getDanhSachNhanVien() {
 	    	System.out.println("Số lượng nhân viên: " + danhSachNhanVien.size());
 	    	return danhSachNhanVien;
 	    }
 	 
 
 }
-

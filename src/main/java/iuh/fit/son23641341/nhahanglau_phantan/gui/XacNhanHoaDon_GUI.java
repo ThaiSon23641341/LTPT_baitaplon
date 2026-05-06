@@ -14,7 +14,7 @@ import iuh.fit.son23641341.nhahanglau_phantan.dao.PhieuDat_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.control.BanAn_Ctr;
 import iuh.fit.son23641341.nhahanglau_phantan.control.HoaDon_Ctrl;
 import iuh.fit.son23641341.nhahanglau_phantan.control.KhachHang_Ctr;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.HoaDon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
@@ -308,7 +308,7 @@ public class XacNhanHoaDon_GUI extends JFrame {
             String thongTinCoc = (tienCoc > 0) ? String.format("<br>Đã đặt cọc: -%,.0f VNĐ", tienCoc) : "";
             
             int maBanChinh = (hoaDonHienTai.getPhieuDat() != null) ? hoaDonHienTai.getPhieuDat().getMaBan() : 0;
-            ArrayList<ChiTietDonHang> dsMonAn = (hoaDonHienTai.getPhieuDat() != null) ? hoaDonHienTai.getPhieuDat().getDanhSachMonAn() : null;
+            ArrayList<ChiTietDatMon> dsMonAn = (hoaDonHienTai.getPhieuDat() != null) ? hoaDonHienTai.getPhieuDat().getDanhSachMonAn() : null;
 
             String noiDungDialog = String.format("<html><body style='width: 300px;'>"
                     + "<h3>XÁC NHẬN THANH TOÁN</h3>"
@@ -426,9 +426,9 @@ public class XacNhanHoaDon_GUI extends JFrame {
 
     private void napDuLieuMonAnTuEntity() {
         pnlDanhSachMonAn.removeAll();
-        ArrayList<ChiTietDonHang> dsMon = (hoaDonHienTai.getPhieuDat() != null) ? hoaDonHienTai.getPhieuDat().getDanhSachMonAn() : null;
+        ArrayList<ChiTietDatMon> dsMon = (hoaDonHienTai.getPhieuDat() != null) ? hoaDonHienTai.getPhieuDat().getDanhSachMonAn() : null;
         if (dsMon != null) {
-            for (ChiTietDonHang ct : dsMon) {
+            for (ChiTietDatMon ct : dsMon) {
                 JPanel row = new JPanel(new BorderLayout());
                 row.setBackground(Color.WHITE);
                 row.setBorder(BorderFactory.createMatteBorder(0,0,1,0, new Color(240,240,240)));

@@ -6,7 +6,7 @@ import javax.swing.border.TitledBorder;
 
 import iuh.fit.son23641341.nhahanglau_phantan.control.User_Ctr;
 import iuh.fit.son23641341.nhahanglau_phantan.control.thongTinNhanVien_ctrl;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.User;
 
 import java.awt.*;
@@ -57,7 +57,7 @@ public class ThongTinNhanVien_GUI extends JFrame {
         contentPane.add(mainContentPanel, BorderLayout.CENTER);
         
 //        Lấy dữ liệu và cập nhật giao diện 
-        Nhanvien nvHienTai = User_Ctr.getInstance().getNhanVienHienTai();
+        NhanVien nvHienTai = User_Ctr.getInstance().getNhanVienHienTai();
         updateThongTin(nvHienTai);
     }
 
@@ -222,7 +222,7 @@ public class ThongTinNhanVien_GUI extends JFrame {
         
         return panel;
     }
-    public void updateThongTin(Nhanvien nv) {
+    public void updateThongTin(NhanVien nv) {
         if (nv == null) {
             nameLabel.setText("Không tìm thấy dữ liệu");
             roleLabel.setText("Chức vụ: N/A");
@@ -246,7 +246,7 @@ public class ThongTinNhanVien_GUI extends JFrame {
 
         thongTinNhanVien_ctrl ctrl = new thongTinNhanVien_ctrl();
 
-        Nhanvien nv = ctrl.getNhanVienHienTai();
+        NhanVien nv = ctrl.getNhanVienHienTai();
         User user = ctrl.getUserHienTai();
         // 3. Tạo GUI
         ThongTinNhanVien_GUI gui = new ThongTinNhanVien_GUI();

@@ -1,12 +1,12 @@
 package iuh.fit.son23641341.nhahanglau_phantan.mock;
 
 import iuh.fit.son23641341.nhahanglau_phantan.entity.BanAn;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.HoaDon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.MonAn;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.User;
 
@@ -20,7 +20,7 @@ import java.util.List;
 
 public final class MockData {
     private static final List<KhachHang> KHACH_HANGS = new ArrayList<>();
-    private static final List<Nhanvien> NHAN_VIENS = new ArrayList<>();
+    private static final List<NhanVien> NHAN_VIENS = new ArrayList<>();
     private static final List<User> USERS = new ArrayList<>();
     private static final List<MonAn> MON_ANS = new ArrayList<>();
     private static final List<BanAn> BAN_ANS = new ArrayList<>();
@@ -44,7 +44,7 @@ public final class MockData {
         return KHACH_HANGS;
     }
 
-    public static List<Nhanvien> nhanViens() {
+    public static List<NhanVien> nhanViens() {
         return NHAN_VIENS;
     }
 
@@ -101,9 +101,9 @@ public final class MockData {
         USERS.add(new User("2", "thungan", "123456"));
 
         try {
-            NHAN_VIENS.add(new Nhanvien("NV001", "Nguyễn Quản Lý", "Nam", "Ca Full", "0912345678",
+            NHAN_VIENS.add(new NhanVien("NV001", "Nguyễn Quản Lý", "Nam", "Ca Full", "0912345678",
                 "admin@gmail.com", "Quản lý", 1));
-            NHAN_VIENS.add(new Nhanvien("NV002", "Trần Thu Ngân", "Nữ", "Ca Sáng", "0987654321",
+            NHAN_VIENS.add(new NhanVien("NV002", "Trần Thu Ngân", "Nữ", "Ca Sáng", "0987654321",
                 "thungan@gmail.com", "Thu ngân", 2));
         } catch (Exception ignored) {
         }
@@ -145,9 +145,9 @@ public final class MockData {
             return;
         }
 
-        ArrayList<ChiTietDonHang> chiTiet = new ArrayList<>();
-        chiTiet.add(new ChiTietDonHang(MON_ANS.get(0), 2));
-        chiTiet.add(new ChiTietDonHang(MON_ANS.get(1), 1));
+        ArrayList<ChiTietDatMon> chiTiet = new ArrayList<>();
+        chiTiet.add(new ChiTietDatMon(MON_ANS.get(0), 2));
+        chiTiet.add(new ChiTietDatMon(MON_ANS.get(1), 1));
 
         PhieuDatBan phieu = new PhieuDatBan();
         phieu.setMaPhieu("PD202604210900001");

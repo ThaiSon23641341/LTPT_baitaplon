@@ -1,7 +1,7 @@
 package iuh.fit.son23641341.nhahanglau_phantan.dao;
 
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.mock.MockData;
 
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class PhieuDat_DAO {
         return true;
     }
 
-    public boolean capNhatMonAnCuaPhieu(String maPhieu, ArrayList<ChiTietDonHang> danhSachMon) {
+    public boolean capNhatMonAnCuaPhieu(String maPhieu, ArrayList<ChiTietDatMon> danhSachMon) {
         PhieuDatBan phieu = timPhieuDatBangMa(maPhieu);
         if (phieu == null) {
             return false;

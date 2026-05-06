@@ -3,12 +3,13 @@ package iuh.fit.son23641341.nhahanglau_phantan.gui;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ThanhToan_Dialog extends JDialog {
     
@@ -21,18 +22,21 @@ public class ThanhToan_Dialog extends JDialog {
     private int luaChon = HUY;
     private final double tongThanhToan;
     private final int maBanChinh; // Dùng để truyền sang ChuyenKhoan_Dialog
-    private final ArrayList<ChiTietDonHang> danhSachMonAn; // Thêm biến lưu danh sách món ăn
+    private final ArrayList<ChiTietDatMon> danhSachMonAn; // Thêm biến lưu danh sách món ăn
 
     private static final Color MAU_CHINH = new Color(0xDC4332);
     private static final Color MAU_XAC_NHAN = new Color(0x7AB750);
     private static final Color MAU_HUY = new Color(0x666666); // Màu xám cho Hủy
 
-    public ThanhToan_Dialog(Frame parent, String thongBao, double tongThanhToan, int maBanChinh, ArrayList<ChiTietDonHang> danhSachMonAn) {
+    public ThanhToan_Dialog(Frame parent, String thongBao, double tongThanhToan, int maBanChinh, List<? extends ChiTietDatMon> danhSachMonAn) {
         super(parent, "Xác nhận Thanh toán", true);
         this.tongThanhToan = tongThanhToan;
         this.maBanChinh = maBanChinh;
-        this.danhSachMonAn = danhSachMonAn;
-        
+        this.danhSachMonAn = new ArrayList<>();
+        if (danhSachMonAn != null) {
+            this.danhSachMonAn.addAll(danhSachMonAn);
+        }
+
         // Thiết lập giao diện
         setLayout(new BorderLayout());
         setSize(800, 600);
@@ -169,7 +173,7 @@ public class ThanhToan_Dialog extends JDialog {
             lblChuaCoMon.setAlignmentX(CENTER_ALIGNMENT);
             pnlDanhSach.add(lblChuaCoMon);
         } else {
-            for (ChiTietDonHang ct : danhSachMonAn) {
+            for (ChiTietDatMon ct : danhSachMonAn) {
                 JPanel pnlMonAn = new JPanel(new BorderLayout());
                 pnlMonAn.setBackground(Color.WHITE);
                 pnlMonAn.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(240, 240, 240)));

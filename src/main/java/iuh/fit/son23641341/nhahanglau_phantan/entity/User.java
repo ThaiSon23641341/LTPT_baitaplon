@@ -38,7 +38,14 @@ public class User {
 		this.matKhau = matKhau;
 	}
 
+	public boolean dangNhap() {
+        return tenNguoiDung != null && !tenNguoiDung.trim().isEmpty()
+            && matKhau != null && !matKhau.trim().isEmpty();
+    }
 
+    public boolean dangXuat() {
+        return true;
+    }
 
 	@Override
 	public String toString() {

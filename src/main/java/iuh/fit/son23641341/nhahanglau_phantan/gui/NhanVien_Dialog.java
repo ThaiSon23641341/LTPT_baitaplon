@@ -2,7 +2,7 @@ package iuh.fit.son23641341.nhahanglau_phantan.gui;
 
 import javax.swing.*;
 import java.awt.*;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.dao.NhanVien_DAO;
 
 public class NhanVien_Dialog extends JDialog {
@@ -13,7 +13,7 @@ public class NhanVien_Dialog extends JDialog {
     private NhanVien_DAO nhanVienDAO = new NhanVien_DAO();
     private boolean isEditMode = false;
     private int idUserUpdate = -1; // Lưu id tài khoản khi sửa
-    private Nhanvien nhanVienMoi; // Dùng để trả về cho màn hình chính sau khi thêm/sửa
+    private NhanVien nhanVienMoi; // Dùng để trả về cho màn hình chính sau khi thêm/sửa
 
     // Constructor cho THÊM MỚI
     public NhanVien_Dialog(Frame parent) {
@@ -23,7 +23,7 @@ public class NhanVien_Dialog extends JDialog {
     }
 
     // Constructor cho SỬA
-    public NhanVien_Dialog(Frame parent, Nhanvien nv, String user, String pass, int idUser) {
+    public NhanVien_Dialog(Frame parent, NhanVien nv, String user, String pass, int idUser) {
         super(parent, "Cập Nhật Thông Tin Nhân Viên", true);
         this.isEditMode = true;
         this.idUserUpdate = idUser;
@@ -129,7 +129,7 @@ public class NhanVien_Dialog extends JDialog {
             return;
         }
 
-        this.nhanVienMoi = new Nhanvien(ma, ten, gt, ca, sdt, email, cv, -1); // idUser sẽ gán sau
+        this.nhanVienMoi = new NhanVien(ma, ten, gt, ca, sdt, email, cv, -1); // idUser sẽ gán sau
 
         if (isEditMode) {
             // Chế độ Sửa: Gọi hàm cập nhật (Transaction)
@@ -155,7 +155,7 @@ public class NhanVien_Dialog extends JDialog {
         }
     }
 
-    public Nhanvien getNhanVienMoi() {
+    public NhanVien getNhanVienMoi() {
         return nhanVienMoi;
     }
 }

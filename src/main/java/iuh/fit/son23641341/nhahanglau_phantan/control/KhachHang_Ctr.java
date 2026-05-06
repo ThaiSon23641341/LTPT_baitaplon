@@ -1,7 +1,7 @@
 package iuh.fit.son23641341.nhahanglau_phantan.control;
 
 import iuh.fit.son23641341.nhahanglau_phantan.dao.KhachHang_DAO;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
 
@@ -157,14 +157,13 @@ public class KhachHang_Ctr {
 
         double tongTienMon = 0;
         if (phieuDat.getDanhSachMonAn() != null) {
-            for (ChiTietDonHang ct : phieuDat.getDanhSachMonAn()) {
+            for (ChiTietDatMon ct : phieuDat.getDanhSachMonAn()) {
                 double thanhTien = ct.getMonAn().getGia() * ct.getSoLuong();
                 tongTienMon += thanhTien;
             }
         }
 
-        
-        float diemCong = (float) (tongTienMon / 100000); 
+        int diemCong = (int) (tongTienMon / 100000);
 
         if (diemCong > 0) {
             boolean ketQua = khachHangDAO.congDiemTichLuy(maKH, diemCong);
@@ -176,4 +175,3 @@ public class KhachHang_Ctr {
         }
     }
 }
-

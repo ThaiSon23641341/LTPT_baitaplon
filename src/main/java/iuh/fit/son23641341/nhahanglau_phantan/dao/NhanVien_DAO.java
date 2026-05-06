@@ -1,6 +1,6 @@
 package iuh.fit.son23641341.nhahanglau_phantan.dao;
 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.User;
 import iuh.fit.son23641341.nhahanglau_phantan.mock.MockData;
 
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 // NOTE: Database logic removed; DAO now uses in-memory mock data.
 public class NhanVien_DAO {
 
-    public static Nhanvien timNhanVienTheoDangNhap(String username, String password) {
+    public static NhanVien timNhanVienTheoDangNhap(String username, String password) {
         User user = MockData.users().stream()
             .filter(item -> item.getTenNguoiDung().equals(username) && item.getMatKhau().equals(password))
             .findFirst()
@@ -27,27 +27,27 @@ public class NhanVien_DAO {
     public String getTenNhanVienByMa(String maNhanVien) {
         return MockData.nhanViens().stream()
             .filter(item -> item.getManv().equals(maNhanVien))
-            .map(Nhanvien::getHoten)
+            .map(NhanVien::getHoten)
             .findFirst()
             .orElse(null);
     }
 
-    public ArrayList<Nhanvien> getAllNhanVien() {
+    public ArrayList<NhanVien> getAllNhanVien() {
         return new ArrayList<>(MockData.nhanViens());
     }
 
-    public boolean themNhanVien(Nhanvien nv) {
+    public boolean themNhanVien(NhanVien nv) {
         if (nv == null || timTheoMa(nv.getManv()) != null) {
             return false;
         }
         return MockData.nhanViens().add(nv);
     }
 
-    public boolean capNhatNhanVien(Nhanvien nv) {
+    public boolean capNhatNhanVien(NhanVien nv) {
         if (nv == null) {
             return false;
         }
-        Nhanvien existing = timTheoMa(nv.getManv());
+        NhanVien existing = timTheoMa(nv.getManv());
         if (existing == null) {
             return false;
         }
@@ -65,7 +65,7 @@ public class NhanVien_DAO {
     }
 
     public boolean xoaNhanVien(String maNV, String idUser) {
-        Nhanvien existing = timTheoMa(maNV);
+        NhanVien existing = timTheoMa(maNV);
         if (existing == null) {
             return false;
         }
@@ -84,12 +84,12 @@ public class NhanVien_DAO {
         return newId;
     }
 
-    public boolean themNhanVienVoiIdUser(Nhanvien nv, int idUser) {
+    public boolean themNhanVienVoiIdUser(NhanVien nv, int idUser) {
         if (nv == null || timTheoMa(nv.getManv()) != null) {
             return false;
         }
         try {
-            nv = new Nhanvien(nv.getManv(), nv.getHoten(), nv.getGioiTinh(), nv.getCaLamViec(), nv.getSdt(),
+            nv = new NhanVien(nv.getManv(), nv.getHoten(), nv.getGioiTinh(), nv.getCaLamViec(), nv.getSdt(),
                 nv.getEmail(), nv.getChucVu(), idUser);
         } catch (Exception ignored) {
             return false;
@@ -97,7 +97,7 @@ public class NhanVien_DAO {
         return MockData.nhanViens().add(nv);
     }
 
-    public boolean capNhatNhanVienVaTaiKhoan(Nhanvien nv, int idUser, String user, String pass) {
+    public boolean capNhatNhanVienVaTaiKhoan(NhanVien nv, int idUser, String user, String pass) {
         if (!capNhatNhanVien(nv)) {
             return false;
         }
@@ -114,7 +114,7 @@ public class NhanVien_DAO {
     }
 
     public static Object[] getThongTinSua(String maNV) throws Exception {
-        Nhanvien nv = MockData.nhanViens().stream()
+        NhanVien nv = MockData.nhanViens().stream()
             .filter(item -> item.getManv().equals(maNV))
             .findFirst()
             .orElse(null);
@@ -131,7 +131,7 @@ public class NhanVien_DAO {
         return new Object[] { nv, user.getTenNguoiDung(), user.getMatKhau(), nv.getIdUser() };
     }
 
-    private Nhanvien timTheoMa(String maNV) {
+    private NhanVien timTheoMa(String maNV) {
         return MockData.nhanViens().stream()
             .filter(item -> item.getManv().equals(maNV))
             .findFirst()
@@ -146,7 +146,3 @@ public class NhanVien_DAO {
         }
     }
 }
- 
-	
-    
-

@@ -102,7 +102,7 @@ public class KhachHang_DAO {
         return MockData.khachHangs().removeIf(item -> item.getMaKhachHang().equals(maKhachHang));
     }
 
-    public boolean congDiemTichLuy(String maKhachHang, float diemCong) {
+    public boolean congDiemTichLuy(String maKhachHang, int diemCong) {
         KhachHang existing = MockData.khachHangs().stream()
             .filter(item -> item.getMaKhachHang().equals(maKhachHang))
             .findFirst()

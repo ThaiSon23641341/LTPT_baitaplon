@@ -9,7 +9,7 @@ import iuh.fit.son23641341.nhahanglau_phantan.dao.HoaDon_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.dao.KhachHang_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.dao.PhieuDat_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.BanAn;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.HoaDon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai;
@@ -87,7 +87,7 @@ public class PhieuDat_GUI extends JFrame {
 
     private KhuyenMai khuyenMaiDaApDung;
 
-    private ArrayList<ChiTietDonHang> danhSachMonDaChonA;
+    private ArrayList<ChiTietDatMon> danhSachMonDaChonA;
     private int soBan;
     private BanAn_Ctr banAnCtr;
     private BanAn banHienTai;
@@ -98,7 +98,7 @@ public class PhieuDat_GUI extends JFrame {
     private String maPhieuDangXem; // Lưu mã phiếu khi load từ DB
     private boolean isBanFullKhungGio = false; // Đánh dấu bàn đã full 6/6 khung giờ
 
-    private ArrayList<ChiTietDonHang> danhSachMonDaChon;
+    private ArrayList<ChiTietDatMon> danhSachMonDaChon;
     private JLabel lblGiaTriTamTinh;
     private JLabel lblThoat;
     
@@ -210,10 +210,10 @@ public class PhieuDat_GUI extends JFrame {
             cheDoHienThi = "DAT_MOI";
         }
 
-        this.danhSachMonDaChon = phieuDatBanCtr.layDanhSachMonAnChoBan(soBan);
+        this.danhSachMonDaChon = new ArrayList<>(phieuDatBanCtr.layDanhSachMonAnChoBan(soBan));
         if (this.danhSachMonDaChon == null) {
             this.danhSachMonDaChon = new ArrayList<>();
-            phieuDatBanCtr.capNhatDanhSachMonAn(soBan, this.danhSachMonDaChon);
+            phieuDatBanCtr.capNhatDanhSachMonAn(soBan, rawDanhSachMon(this.danhSachMonDaChon));
         }
 
         khoiTaoThanhPhan();
@@ -229,7 +229,7 @@ public class PhieuDat_GUI extends JFrame {
                 // Load danh sách món ăn từ phiếu
                 if (phieuHienTai.getDanhSachMonAn() != null && !phieuHienTai.getDanhSachMonAn().isEmpty()) {
                     this.danhSachMonDaChon = new ArrayList<>(phieuHienTai.getDanhSachMonAn());
-                    phieuDatBanCtr.capNhatDanhSachMonAn(soBan, danhSachMonDaChon);
+                    phieuDatBanCtr.capNhatDanhSachMonAn(soBan, rawDanhSachMon(danhSachMonDaChon));
                     capNhatPanelThongTinDatMon();
                 }
                 // Load thông tin khách hàng lên form
@@ -252,7 +252,7 @@ public class PhieuDat_GUI extends JFrame {
             double phiBan = 250000 * soLuongBan;
             double tienMonAn = 0;
             if (danhSachMonDaChon != null && !danhSachMonDaChon.isEmpty()) {
-                for (ChiTietDonHang ct : danhSachMonDaChon) {
+                for (ChiTietDatMon ct : danhSachMonDaChon) {
                     tienMonAn += ct.getMonAn().getGia() * ct.getSoLuong();
                 }
             }
@@ -690,7 +690,7 @@ public class PhieuDat_GUI extends JFrame {
         double tongTienMonAn = 0;
 
         if (danhSachMonDaChon != null && !danhSachMonDaChon.isEmpty()) {
-            for (ChiTietDonHang ct : danhSachMonDaChon) {
+            for (ChiTietDatMon ct : danhSachMonDaChon) {
                 String ten = ct.getMonAn().getTenMon();
                 String sl = "x" + ct.getSoLuong();
                 String gia = String.format("%,.0f VNĐ", ct.getMonAn().getGia() * ct.getSoLuong());
@@ -768,17 +768,17 @@ public class PhieuDat_GUI extends JFrame {
                     if (this.phieuTamThoi.getDanhSachMonAn() != null && !this.phieuTamThoi.getDanhSachMonAn().isEmpty()) {
                         // Lọc bỏ các món có số lượng <= 0
                         danhSachMonDaChon = new ArrayList<>();
-                        for (ChiTietDonHang mon : this.phieuTamThoi.getDanhSachMonAn()) {
+                        for (ChiTietDatMon mon : this.phieuTamThoi.getDanhSachMonAn()) {
                             if (mon.getSoLuong() > 0) {
                                 danhSachMonDaChon.add(mon);
                             }
                         }
                     } else {
                         // Nếu phieuTamThoi không có món, lấy từ controller
-                        List<ChiTietDonHang> monMoi = phieuDatBanCtr.layDanhSachMonAnChoBan(soBan);
+                        List<? extends ChiTietDatMon> monMoi = phieuDatBanCtr.layDanhSachMonAnChoBan(soBan);
                         danhSachMonDaChon = new ArrayList<>();
                         if (monMoi != null) {
-                            for (ChiTietDonHang mon : monMoi) {
+                            for (ChiTietDatMon mon : monMoi) {
                                 if (mon.getSoLuong() > 0) {
                                     danhSachMonDaChon.add(mon);
                                 }
@@ -787,8 +787,8 @@ public class PhieuDat_GUI extends JFrame {
                     }
                     
                     // Cập nhật lại controller với danh sách đã lọc
-                    phieuDatBanCtr.capNhatDanhSachMonAn(soBan, danhSachMonDaChon);
-                    
+                    phieuDatBanCtr.capNhatDanhSachMonAn(soBan, rawDanhSachMon(danhSachMonDaChon));
+
                     // CẬP NHẬT PANEL THÔNG TIN ĐẶT MÓN NGAY SAU KHI KHÔI PHỤC
                     capNhatPanelThongTinDatMon();
                     
@@ -1086,7 +1086,7 @@ public class PhieuDat_GUI extends JFrame {
             double phiBan = 250000 * soLuongBan;
             double tienMonAn = 0;
             if (danhSachMonDaChonA != null && !danhSachMonDaChonA.isEmpty()) {
-                for (ChiTietDonHang ct : danhSachMonDaChonA) {
+                for (ChiTietDatMon ct : danhSachMonDaChonA) {
                     tienMonAn += ct.getMonAn().getGia() * ct.getSoLuong();
                 }
             }
@@ -1272,14 +1272,14 @@ public class PhieuDat_GUI extends JFrame {
                 phieuDAO.capNhatThongTinKhachHang(maPhieu, tenKhach, sdt, email);
                 
                 // Cập nhật món ăn - Ưu tiên danhSachMonDaChon (đã được cập nhật từ controller)
-                ArrayList<ChiTietDonHang> danhSachMon = new ArrayList<>(danhSachMonDaChon);
-                
+                ArrayList<ChiTietDatMon> danhSachMon = new ArrayList<>(danhSachMonDaChon);
+
                 System.out.println("=== LƯU THAY ĐỔI ===");
                 System.out.println("Số món trong danhSachMonDaChon: " + danhSachMonDaChon.size());
                 System.out.println("Số món trong danhSachMonDaChonA: " + (danhSachMonDaChonA != null ? danhSachMonDaChonA.size() : "null"));
                 
-                boolean thanhCong = phieuDatBanCtr.capNhatMonAnCuaPhieu(maPhieu, danhSachMon);
-                
+                boolean thanhCong = phieuDatBanCtr.capNhatMonAnCuaPhieu(maPhieu, rawDanhSachMon(danhSachMon));
+
                 
                 
                 if (thanhCong) {
@@ -1289,15 +1289,15 @@ public class PhieuDat_GUI extends JFrame {
                     }
                     
                     // Cập nhật vào controller
-                    phieuDatBanCtr.capNhatDanhSachMonAn(soBan, danhSachMon);
-                    
+                    phieuDatBanCtr.capNhatDanhSachMonAn(soBan, rawDanhSachMon(danhSachMon));
+
                     JOptionPane.showMessageDialog(this, "Đã cập nhật thông tin thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
                     
                     // Cập nhật lại tiền cọc sau khi thay đổi món (chỉ cho khách đặt trước)
                     if (phieuHienTai != null && phieuHienTai.getTienCoc() > 0) {
                         double tienMonAn = 0;
                         if (danhSachMon != null && !danhSachMon.isEmpty()) {
-                            for (ChiTietDonHang ct : danhSachMon) {
+                            for (ChiTietDatMon ct : danhSachMon) {
                                 tienMonAn += ct.getMonAn().getGia() * ct.getSoLuong();
                             }
                         }
@@ -1417,7 +1417,7 @@ public class PhieuDat_GUI extends JFrame {
                     // Load danh sách món ăn từ phiếu
                     if (phieuHienTai.getDanhSachMonAn() != null && !phieuHienTai.getDanhSachMonAn().isEmpty()) {
                         this.danhSachMonDaChon = new ArrayList<>(phieuHienTai.getDanhSachMonAn());
-                        phieuDatBanCtr.capNhatDanhSachMonAn(soBan, danhSachMonDaChon);
+                        phieuDatBanCtr.capNhatDanhSachMonAn(soBan, rawDanhSachMon(danhSachMonDaChon));
                         System.out.println("=== Load " + danhSachMonDaChon.size() + " món ăn từ phiếu ===");
                     }
                 }
@@ -1505,6 +1505,10 @@ public class PhieuDat_GUI extends JFrame {
         });
     }
     
+    private ArrayList rawDanhSachMon(ArrayList<ChiTietDatMon> danhSachMon) {
+        return danhSachMon;
+    }
+
     private PhieuDatBan thucHienLuuPhieuDat(String tenKH, String sdt, String ngayDat, String gioDat, String phuongThuc) {
     	String emailDat = txtEmail.getText().trim();
     	if (emailDat.equals("Nhập email")) {
@@ -1514,7 +1518,7 @@ public class PhieuDat_GUI extends JFrame {
         System.out.println("Danh sách món đã chọn: " + danhSachMonDaChonA);
 
         PhieuDatBan_Ctr phieuDatBanCtr = PhieuDatBan_Ctr.getInstance();
-        PhieuDatBan phieuDatMoi = phieuDatBanCtr.taoPhieuDat(tenKH, sdt, ngayDat, gioDat, phuongThuc, emailDat, danhSachBanDaChon, danhSachMonDaChonA, 0) ;
+        PhieuDatBan phieuDatMoi = phieuDatBanCtr.taoPhieuDat(tenKH, sdt, ngayDat, gioDat, phuongThuc, emailDat, danhSachBanDaChon, rawDanhSachMon(danhSachMonDaChonA), 0) ;
         if (phieuDatMoi != null) {
 			System.out.println("Lưu phiếu đặt bàn thành công!");
 			
@@ -1556,8 +1560,8 @@ public class PhieuDat_GUI extends JFrame {
         try {
             if (phieuHienTai.getGioDat() != null && !phieuHienTai.getGioDat().isEmpty()) {
                 // Parse giờ từ String "HH:mm" thành Date
-                SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-                Date gio = timeFormat.parse(phieuHienTai.getGioDat());
+                SimpleDateFormat sdfTime = new SimpleDateFormat("HH:mm");
+                Date gio = sdfTime.parse(phieuHienTai.getGioDat());
                 spinnerGioDat.setValue(gio);
             } else if (phieuHienTai.getThoiGianDat() != null) {
                 // Fallback: load từ thoiGianDat nếu gioDat không có
@@ -1837,7 +1841,7 @@ public class PhieuDat_GUI extends JFrame {
             double phiBan = 250000 * soLuongBan;
             double tienMonAn = 0;
             if (!danhSachMonDaChon.isEmpty()) {
-                for (ChiTietDonHang ct : danhSachMonDaChon) {
+                for (ChiTietDatMon ct : danhSachMonDaChon) {
                     tienMonAn += ct.getMonAn().getGia() * ct.getSoLuong();
                 }
             }
@@ -1946,7 +1950,7 @@ public class PhieuDat_GUI extends JFrame {
         
         danhSachMonDaChon.clear();
         danhSachMonDaChonA.clear();
-        phieuDatBanCtr.capNhatDanhSachMonAn(soBan, danhSachMonDaChon);
+        phieuDatBanCtr.capNhatDanhSachMonAn(soBan, rawDanhSachMon(danhSachMonDaChon));
         capNhatPanelThongTinDatMon();
         
         danhSachBanDaChon.clear();
@@ -2047,9 +2051,9 @@ public class PhieuDat_GUI extends JFrame {
         // Load danh sách món ăn
         if (phieu.getDanhSachMonAn() != null && !phieu.getDanhSachMonAn().isEmpty()) {
             System.out.println("=== LOAD PHIẾU: Số món ăn từ phiếu: " + phieu.getDanhSachMonAn().size());
-            for (ChiTietDonHang ct : phieu.getDanhSachMonAn()) {
+            for (ChiTietDatMon ct : phieu.getDanhSachMonAn()) {
                 System.out.println("    - " + ct.getMonAn().getTenMon() + " x" + ct.getSoLuong());
-                danhSachMonDaChon.add(new ChiTietDonHang(ct.getMonAn(), ct.getSoLuong()));
+                danhSachMonDaChon.add(new ChiTietDatMon(ct.getMonAn(), ct.getSoLuong()));
             }
             capNhatPanelThongTinDatMon();
             System.out.println("=== LOAD PHIẾU: Đã render " + danhSachMonDaChon.size() + " món lên giao diện");
@@ -2095,4 +2099,7 @@ public class PhieuDat_GUI extends JFrame {
         voHieuHoaForm();
     }
 }	
+
+
+
 

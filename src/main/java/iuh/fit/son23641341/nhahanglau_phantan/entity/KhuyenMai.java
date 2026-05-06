@@ -1,21 +1,23 @@
 package iuh.fit.son23641341.nhahanglau_phantan.entity;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class KhuyenMai {
+    private static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ROOT);
     private String maKhuyenMai;
     private String tenKhuyenMai;
     private double phanTramGiam;
-    private String ngayBatDau; 
-    private String ngayKetThuc;
+    private LocalDate ngayBatDau;
+    private LocalDate ngayKetThuc;
     private String moTa;
 
-        public KhuyenMai(KhuyenMai km) {
+    public KhuyenMai(KhuyenMai km) {
         this(km.maKhuyenMai, km.tenKhuyenMai, km.phanTramGiam, km.ngayBatDau, km.ngayKetThuc, km.moTa);
     }
-
 
     public KhuyenMai(String maKhuyenMai, String tenKhuyenMai, double phanTramGiam,
                      String ngayBatDau, String ngayKetThuc, String moTa) {
@@ -27,6 +29,15 @@ public class KhuyenMai {
         setMoTa(moTa);
     }
 
+    public KhuyenMai(String maKhuyenMai, String tenKhuyenMai, double phanTramGiam,
+                     LocalDate ngayBatDau, LocalDate ngayKetThuc, String moTa) {
+        setMaKhuyenMai(maKhuyenMai);
+        setTenKhuyenMai(tenKhuyenMai);
+        setPhanTramGiam(phanTramGiam);
+        setNgayBatDau(ngayBatDau);
+        setNgayKetThuc(ngayKetThuc);
+        setMoTa(moTa);
+    }
 
     public String getMaKhuyenMai() {
         return maKhuyenMai;
@@ -61,41 +72,49 @@ public class KhuyenMai {
         this.phanTramGiam = phanTramGiam;
     }
 
-    public String getNgayBatDau() {
+    public LocalDate getNgayBatDau() {
         return ngayBatDau;
     }
 
-    public void setNgayBatDau(String ngayBatDau) {
-        if (ngayBatDau == null || !isValidDateFormat(ngayBatDau)) {
-            throw new IllegalArgumentException("Ngày bắt đầu không hợp lệ. Định dạng đúng là dd/MM/yyyy (ví dụ: 15/10/2025).");
+    public String getNgayBatDauFormatted() {
+        return ngayBatDau != null ? ngayBatDau.format(DATE_FORMATTER) : "";
+    }
+
+    public void setNgayBatDau(LocalDate ngayBatDau) {
+        if (ngayBatDau == null) {
+            throw new IllegalArgumentException("Ngày bắt đầu không hợp lệ.");
         }
         this.ngayBatDau = ngayBatDau;
     }
 
-    public String getNgayKetThuc() {
+    public void setNgayBatDau(String ngayBatDau) {
+        this.ngayBatDau = parseNgay(ngayBatDau, "Ngày bắt đầu không hợp lệ.");
+    }
+
+    public LocalDate getNgayKetThuc() {
         return ngayKetThuc;
     }
 
-    public void setNgayKetThuc(String ngayKetThuc) {
-        if (ngayKetThuc == null || !isValidDateFormat(ngayKetThuc)) {
-            throw new IllegalArgumentException("Ngày kết thúc không hợp lệ. Định dạng đúng là dd/MM/yyyy (ví dụ: 20/10/2025).");
-        }
+    public String getNgayKetThucFormatted() {
+        return ngayKetThuc != null ? ngayKetThuc.format(DATE_FORMATTER) : "";
+    }
 
-        // Kiểm tra ngày kết thúc >= ngày bắt đầu
-        if (this.ngayBatDau != null && isValidDateFormat(this.ngayBatDau)) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            try {
-                LocalDate start = LocalDate.parse(this.ngayBatDau, formatter);
-                LocalDate end = LocalDate.parse(ngayKetThuc, formatter);
-                if (end.isBefore(start)) {
-                    throw new IllegalArgumentException("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.");
-                }
-            } catch (DateTimeParseException e) {
-                throw new IllegalArgumentException("Lỗi khi xử lý định dạng ngày.");
-            }
+    public void setNgayKetThuc(LocalDate ngayKetThuc) {
+        if (ngayKetThuc == null) {
+            throw new IllegalArgumentException("Ngày kết thúc không hợp lệ.");
         }
-
+        if (this.ngayBatDau != null && ngayKetThuc.isBefore(this.ngayBatDau)) {
+            throw new IllegalArgumentException("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.");
+        }
         this.ngayKetThuc = ngayKetThuc;
+    }
+
+    public void setNgayKetThuc(String ngayKetThuc) {
+        LocalDate parsed = parseNgay(ngayKetThuc, "Ngày kết thúc không hợp lệ.");
+        if (this.ngayBatDau != null && parsed.isBefore(this.ngayBatDau)) {
+            throw new IllegalArgumentException("Ngày kết thúc phải sau hoặc bằng ngày bắt đầu.");
+        }
+        this.ngayKetThuc = parsed;
     }
 
     public String getMoTa() {
@@ -112,10 +131,21 @@ public class KhuyenMai {
         return Pattern.matches(regex, dateStr);
     }
 
+    private static LocalDate parseNgay(String dateStr, String errorMessage) {
+        if (dateStr == null || dateStr.trim().isEmpty()) {
+            throw new IllegalArgumentException(errorMessage);
+        }
+        try {
+            return LocalDate.parse(dateStr.trim(), DATE_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Ngày không hợp lệ. Định dạng đúng là dd/MM/yyyy (ví dụ: 15/10/2025).");
+        }
+    }
+
     // ------------------- Phương thức nghiệp vụ -------------------
     @Override
     public String toString() {
         return String.format("KhuyenMai[ma=%s, ten=%s, giam=%.1f%%, batDau=%s, ketThuc=%s, moTa=%s]",
-                maKhuyenMai, tenKhuyenMai, phanTramGiam, ngayBatDau, ngayKetThuc, moTa);
+                maKhuyenMai, tenKhuyenMai, phanTramGiam, getNgayBatDauFormatted(), getNgayKetThucFormatted(), moTa);
     }
 }

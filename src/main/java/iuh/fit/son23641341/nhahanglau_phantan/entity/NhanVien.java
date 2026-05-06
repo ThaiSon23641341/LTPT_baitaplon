@@ -2,7 +2,7 @@ package iuh.fit.son23641341.nhahanglau_phantan.entity;
 import java.util.Objects;
 
 
-public class Nhanvien {
+public class NhanVien {
 
     // 1. Khai báo thuộc tính
     private String manv;
@@ -17,10 +17,10 @@ public class Nhanvien {
     // --- Constructors ---
 
 
-    public Nhanvien() {
+    public NhanVien() {
     }
 
-    public Nhanvien(String manv, String hoten, String gioiTinh, String caLamViec, String sdt, String email, String chucVu, int idUser) throws Exception {
+    public NhanVien(String manv, String hoten, String gioiTinh, String caLamViec, String sdt, String email, String chucVu, int idUser) throws Exception {
         this.manv = manv;
         this.hoten = hoten;
 		this.gioiTinh = gioiTinh;
@@ -135,6 +135,31 @@ public class Nhanvien {
 		return idUser;
 	}
 
+    // --- Aliases for UML naming ---
+    public String getMaNhanVien() {
+        return getManv();
+    }
+
+    public void setMaNhanVien(String maNhanVien) throws Exception {
+        setManv(maNhanVien);
+    }
+
+    public String getHoTen() {
+        return getHoten();
+    }
+
+    public void setHoTen(String hoTen) throws Exception {
+        setHoten(hoTen);
+    }
+
+    public String getSoDienThoai() {
+        return getSdt();
+    }
+
+    public void setSoDienThoai(String sdt) throws Exception {
+        setSdt(sdt);
+    }
+
     // --- Phương thức tiện ích (toString, equals, hashCode) ---
 
     @Override
@@ -154,8 +179,8 @@ public class Nhanvien {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Nhanvien nhanVien = (Nhanvien) o;
-        return manv == nhanVien.manv;
+        NhanVien nhanVien = (NhanVien) o;
+        return manv != null && manv.equals(nhanVien.manv);
     }
 
     @Override
@@ -163,3 +188,5 @@ public class Nhanvien {
         return Objects.hash(manv);
     }
 }
+
+

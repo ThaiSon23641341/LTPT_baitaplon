@@ -1,4 +1,3 @@
-
 package iuh.fit.son23641341.nhahanglau_phantan.gui;
 
 import java.awt.BorderLayout;
@@ -31,7 +30,7 @@ import javax.swing.JOptionPane;
 import iuh.fit.son23641341.nhahanglau_phantan.control.KhuyenMai_Ctr;
 import iuh.fit.son23641341.nhahanglau_phantan.control.User_Ctr;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 
 public class QuanLiDuLieu_GUI extends JFrame {
     // Khai báo các button làm biến instance
@@ -379,7 +378,7 @@ public class QuanLiDuLieu_GUI extends JFrame {
 
             NhanVien_Dialog dlg = new NhanVien_Dialog(QuanLiDuLieu_GUI.this);
             dlg.setVisible(true);
-            Nhanvien created = dlg.getNhanVienMoi();
+            NhanVien created = dlg.getNhanVienMoi();
             
             if (created != null) {
                 loadDataToTable(); 
@@ -412,7 +411,7 @@ public class QuanLiDuLieu_GUI extends JFrame {
 			} 
 
             if (data != null) {
-                Nhanvien nv = (Nhanvien) data[0];
+                NhanVien nv = (NhanVien) data[0];
                 String user = (String) data[1];
                 String pass = (String) data[2];
                 int idUser = (int) data[3];
@@ -449,7 +448,7 @@ public class QuanLiDuLieu_GUI extends JFrame {
             String ten = k.getTenKhuyenMai();
             String phan = String.format("%.0f%%", k.getPhanTramGiam());
             kmModel.addRow(
-                    new Object[] { k.getMaKhuyenMai(), ten, phan, k.getNgayBatDau(), k.getNgayKetThuc(), k.getMoTa() });
+                    new Object[] { k.getMaKhuyenMai(), ten, phan, k.getNgayBatDauFormatted(), k.getNgayKetThucFormatted(), k.getMoTa() });
         }
     }
     
@@ -464,9 +463,9 @@ public class QuanLiDuLieu_GUI extends JFrame {
             // Xóa sạch dữ liệu cũ trên table trước khi nạp mới
             modelNhanvien.setRowCount(0);
         	NhanVien_DAO dao = new NhanVien_DAO();
-        	ArrayList<Nhanvien> list = dao.getAllNhanVien();
+        	ArrayList<NhanVien> list = dao.getAllNhanVien();
             // Duyệt danh sách và thêm từng dòng vào model
-            for (Nhanvien nv : list) {
+            for (NhanVien nv : list) {
                 Object[] row = {
                     nv.getManv(), 
                     nv.getHoten(), 
@@ -496,4 +495,3 @@ public class QuanLiDuLieu_GUI extends JFrame {
     }
 
 }
-

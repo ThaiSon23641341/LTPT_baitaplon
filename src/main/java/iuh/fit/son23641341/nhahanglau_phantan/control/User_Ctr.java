@@ -1,6 +1,6 @@
 package iuh.fit.son23641341.nhahanglau_phantan.control;
 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.dao.NhanVien_DAO; // Nhớ import DAO này
 import java.time.LocalDate; // for default month/year
 
@@ -8,7 +8,7 @@ import java.time.LocalDate; // for default month/year
 public class User_Ctr {
     private static User_Ctr instance;
     
-    private Nhanvien nhanVienHienTai; 
+    private NhanVien nhanVienHienTai;
     private String usernameHienTai;
 
     // NEW: store selected month/year (optional; defaults to current month/year)
@@ -28,7 +28,7 @@ public class User_Ctr {
 
     public boolean kiemTraDangNhap(String username, String password) {
         NhanVien_DAO nvDao = new NhanVien_DAO();
-        Nhanvien nv = nvDao.timNhanVienTheoDangNhap(username, password);
+        NhanVien nv = nvDao.timNhanVienTheoDangNhap(username, password);
 
         if (nv != null) {
             this.nhanVienHienTai = nv;
@@ -41,7 +41,7 @@ public class User_Ctr {
     }
     // ====================================
     
-    public void setNhanVienHienTai(Nhanvien nv) {
+    public void setNhanVienHienTai(NhanVien nv) {
         this.nhanVienHienTai = nv;
     }
     
@@ -93,7 +93,7 @@ public class User_Ctr {
 
     // ... (Các phần khác giữ nguyên) ...
     
-    public Nhanvien getNhanVienHienTai() {
+    public NhanVien getNhanVienHienTai() {
         return nhanVienHienTai;
     }
 

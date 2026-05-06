@@ -1,6 +1,6 @@
 package iuh.fit.son23641341.nhahanglau_phantan.dao;
 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.User;
 import iuh.fit.son23641341.nhahanglau_phantan.mock.MockData;
 
@@ -26,12 +26,12 @@ public class User_DAO implements IUserDAO {
     }
 
     public String getChucVuByUsername(String username) {
-        Nhanvien nv = findNhanvienByUsername(username);
+        NhanVien nv = findNhanvienByUsername(username);
         return nv != null ? nv.getChucVu() : null;
     }
 
     public String getHoTenByUsername(String username) {
-        Nhanvien nv = findNhanvienByUsername(username);
+        NhanVien nv = findNhanvienByUsername(username);
         return nv != null ? nv.getHoten() : null;
     }
 
@@ -41,7 +41,7 @@ public class User_DAO implements IUserDAO {
     }
 
     public boolean doiMatKhau(String hoTenNhanVien, String newPassword) {
-        Nhanvien nv = MockData.nhanViens().stream()
+        NhanVien nv = MockData.nhanViens().stream()
             .filter(item -> item.getHoten().equals(hoTenNhanVien))
             .findFirst()
             .orElse(null);
@@ -56,7 +56,7 @@ public class User_DAO implements IUserDAO {
         return true;
     }
 
-    private Nhanvien findNhanvienByUsername(String username) {
+    private NhanVien findNhanvienByUsername(String username) {
         User user = MockData.users().stream()
             .filter(item -> item.getTenNguoiDung().equals(username))
             .findFirst()
@@ -86,4 +86,3 @@ public class User_DAO implements IUserDAO {
         }
     }
 }
-

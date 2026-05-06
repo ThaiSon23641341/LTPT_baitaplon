@@ -88,7 +88,13 @@ public class MonAn {
         this.moTa = moTa;
     }
 
-  
+    public void capNhatThongTin(String tenMon, String loaiMon, double gia, String moTa) throws Exception {
+        setTenMon(tenMon);
+        setLoaiMon(loaiMon);
+        setGia(gia);
+        setMoTa(moTa);
+    }
+
     @Override
     public String toString() {
         return String.format("Mã món: %s | Tên món: %s | Loại: %s | Giá: %.2f | Mô tả: %s",

@@ -211,7 +211,7 @@ public class ThemKhachHang_Dialog extends JDialog implements ActionListener {
             if (validateInputs()) {
                 try {
                     // Lấy giá trị Điểm Tích Lũy từ trường, mặc dù nó là "0" và không thể sửa
-                    float diemTichLuy = Float.parseFloat(txtDiemSo.getText().trim());
+                    int diemTichLuy = Integer.parseInt(txtDiemSo.getText().trim());
                     
                     khachHangMoi = new KhachHang(
                                 null, // Mã KH sẽ được Controller tạo

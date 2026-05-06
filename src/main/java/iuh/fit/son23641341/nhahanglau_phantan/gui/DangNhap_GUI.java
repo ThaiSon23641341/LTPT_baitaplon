@@ -7,7 +7,7 @@ import javax.swing.*;
 
 import iuh.fit.son23641341.nhahanglau_phantan.control.User_Ctr;
 import iuh.fit.son23641341.nhahanglau_phantan.dao.NhanVien_DAO; 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.util.ImageLoader;
 
 public class DangNhap_GUI extends JFrame {
@@ -214,7 +214,7 @@ public class DangNhap_GUI extends JFrame {
         // Kiểm tra đăng nhập
         if (userCtr.kiemTraDangNhap(username, password)) {
         	
-        	Nhanvien nhanVienLogin = NhanVien_DAO.timNhanVienTheoDangNhap(username, password) ; 
+        	NhanVien nhanVienLogin = NhanVien_DAO.timNhanVienTheoDangNhap(username, password) ;
         	if (nhanVienLogin != null) {
                 // === LƯU NHÂN VIÊN VÀO CONTROLLER ===
                 userCtr.setNhanVienHienTai(nhanVienLogin); 

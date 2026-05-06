@@ -1,7 +1,7 @@
 package iuh.fit.son23641341.nhahanglau_phantan.gui;
 
 import iuh.fit.son23641341.nhahanglau_phantan.control.User_Ctr; // Import controller để lấy thông tin chức vụ
-import iuh.fit.son23641341.nhahanglau_phantan.entity.Nhanvien;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
 import iuh.fit.son23641341.nhahanglau_phantan.util.ImageLoader;
 
 import java.awt.BorderLayout;
@@ -224,7 +224,7 @@ public class SideBar_GUI extends JPanel implements ActionListener {
     }
     
     private void phanQuyenTaiKhoan() {
-        Nhanvien nv = User_Ctr.getInstance().getNhanVienHienTai();
+        NhanVien nv = User_Ctr.getInstance().getNhanVienHienTai();
 
         if (nv == null) return; 
 

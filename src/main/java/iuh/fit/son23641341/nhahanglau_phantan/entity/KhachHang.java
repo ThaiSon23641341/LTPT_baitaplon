@@ -12,14 +12,14 @@ public class KhachHang {
     private String email;           
     private String gioiTinh;        
     private String thanhVien;       
-    private float diemTichLuy;      
-    private LocalDate ngayDangKy;   
+    private int diemTichLuy;
+    private LocalDate ngayDangKy;
 
 
     public KhachHang() {
     }
 
-    public KhachHang(String maKhachHang, String hoTen, String soDienThoai, String email, String gioiTinh, String thanhVien, float diemTichLuy, LocalDate ngayDangKy) {
+    public KhachHang(String maKhachHang, String hoTen, String soDienThoai, String email, String gioiTinh, String thanhVien, int diemTichLuy, LocalDate ngayDangKy) {
         this.maKhachHang = maKhachHang;
         this.hoTen = hoTen;
         this.soDienThoai = soDienThoai;
@@ -57,7 +57,7 @@ public class KhachHang {
         return thanhVien;
     }
 
-    public float getDiemTichLuy() {
+    public int getDiemTichLuy() {
         return diemTichLuy;
     }
 
@@ -114,7 +114,7 @@ public class KhachHang {
         this.thanhVien = thanhVien;
     }
 
-    public void setDiemTichLuy(float diemTichLuy) {
+    public void setDiemTichLuy(int diemTichLuy) {
         if (diemTichLuy < 0) {
             throw new IllegalArgumentException("Điểm tích lũy phải >= 0.");
         }

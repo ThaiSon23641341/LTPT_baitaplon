@@ -1,7 +1,7 @@
 package iuh.fit.son23641341.nhahanglau_phantan.control;
 
 import iuh.fit.son23641341.nhahanglau_phantan.dao.HoaDon_DAO;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.HoaDon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
@@ -16,7 +16,7 @@ public class HoaDon_Ctrl {
     public double tinhTongTienMonAn(HoaDon hoaDon) {
         double tong = 0;
         if (hoaDon.getPhieuDat() != null && hoaDon.getPhieuDat().getDanhSachMonAn() != null) {
-            for (ChiTietDonHang ct : hoaDon.getPhieuDat().getDanhSachMonAn()) {
+            for (ChiTietDatMon ct : hoaDon.getPhieuDat().getDanhSachMonAn()) {
                 tong += ct.getMonAn().getGia() * ct.getSoLuong();
             }
         }
@@ -71,4 +71,3 @@ public class HoaDon_Ctrl {
         }
     }
 }
-

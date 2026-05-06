@@ -28,7 +28,7 @@ import java.awt.Dimension;
 import iuh.fit.son23641341.nhahanglau_phantan.control.BanAn_Ctr;
 import iuh.fit.son23641341.nhahanglau_phantan.control.MonAn_Ctr;
 import iuh.fit.son23641341.nhahanglau_phantan.control.PhieuDatBan_Ctr;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDonHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.MonAn;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
 
@@ -43,7 +43,7 @@ public class DanhSachMonAnNV_GUI extends JFrame {
 
 	// ======================= BIẾN CONTROLLER VÀ DANH SÁCH =======================
 	private MonAn_Ctr monAnCtr;
-	private ArrayList<ChiTietDonHang> chiTietDonHangHienTai;
+	private ArrayList<ChiTietDatMon> chiTietDonHangHienTai;
 	private PhieuDatBan_Ctr phieuDatBanCtr;
 
 	// ======================= BIẾN GIAO DIỆN =======================
@@ -453,19 +453,19 @@ public class DanhSachMonAnNV_GUI extends JFrame {
 	// ======================= LOGIC XỬ LÝ ĐƠN HÀNG =======================
 
 	private void themMonVaoDonHang(MonAn mon) {
-		for (ChiTietDonHang item : chiTietDonHangHienTai) {
+		for (ChiTietDatMon item : chiTietDonHangHienTai) {
 			if (item.getMonAn().getMaMon().equals(mon.getMaMon())) {
 				item.increment();
 				capNhatGiaoDienDonHang();
 				return;
 			}
 		}
-		ChiTietDonHang newItem = new ChiTietDonHang(mon, 1);
+		ChiTietDatMon newItem = new ChiTietDatMon(mon, 1);
 		chiTietDonHangHienTai.add(newItem);
 		capNhatGiaoDienDonHang();
 	}
 
-	private void giamSoLuongMon(ChiTietDonHang item) {
+	private void giamSoLuongMon(ChiTietDatMon item) {
 		item.decrement();
 		if (item.getSoLuong() <= 0) {
 			chiTietDonHangHienTai.remove(item);
@@ -478,7 +478,7 @@ public class DanhSachMonAnNV_GUI extends JFrame {
 		double tongTien = 0;
 		int stt = 1;
 
-		for (ChiTietDonHang item : chiTietDonHangHienTai) {
+		for (ChiTietDatMon item : chiTietDonHangHienTai) {
 			JPanel itemPanel = createOrderItemPanel(item, stt);
 			orderItemsPanel.add(itemPanel);
 			orderItemsPanel.add(Box.createRigidArea(new Dimension(0, 2)));
@@ -491,7 +491,7 @@ public class DanhSachMonAnNV_GUI extends JFrame {
 		orderItemsPanel.repaint();
 	}
 
-	private JPanel createOrderItemPanel(ChiTietDonHang item, int stt) {
+	private JPanel createOrderItemPanel(ChiTietDatMon item, int stt) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		panel.setBackground(Color.WHITE);
@@ -542,3 +542,5 @@ public class DanhSachMonAnNV_GUI extends JFrame {
 		return panel;
 	}
 }
+
+
