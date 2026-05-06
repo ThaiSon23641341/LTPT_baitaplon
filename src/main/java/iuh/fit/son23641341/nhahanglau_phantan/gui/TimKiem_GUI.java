@@ -10,7 +10,7 @@ import iuh.fit.son23641341.nhahanglau_phantan.dao.PhieuDat_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.dao.TimKiemChung_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.dao.HoaDon_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.HoaDon;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.MonAn;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
 
@@ -187,9 +187,9 @@ public class TimKiem_GUI extends JFrame {
 
         // 1. TÌM KHÁCH HÀNG
         try {
-            ArrayList<KhachHang> listKH = khachHangDao.timKhachHangTheoSDT(keyword);
+            ArrayList<KhachHangThanhVien> listKH = khachHangDao.timKhachHangTheoSDT(keyword);
             if (listKH != null && !listKH.isEmpty()) {
-                for (KhachHang kh : listKH) foodGrid.add(taoTheKhachHang(kh));
+                for (KhachHangThanhVien kh : listKH) foodGrid.add(taoTheKhachHang(kh));
                 found = true;
             }
         } catch (Exception e) {}
@@ -268,11 +268,11 @@ public class TimKiem_GUI extends JFrame {
 
     private void timKiemKhachHang(String keyword) {
         foodGrid.removeAll();
-        ArrayList<KhachHang> ketQua = khachHangDao.timKhachHangTheoSDT(keyword);
+        ArrayList<KhachHangThanhVien> ketQua = khachHangDao.timKhachHangTheoSDT(keyword);
         if (ketQua.isEmpty()) hienThiThongBaoRong("Không tìm thấy khách hàng: " + keyword);
         else {
             setupGridLayout(ketQua.size());
-            for (KhachHang kh : ketQua) foodGrid.add(taoTheKhachHang(kh));
+            for (KhachHangThanhVien kh : ketQua) foodGrid.add(taoTheKhachHang(kh));
         }
         refreshGrid();
     }
@@ -487,7 +487,7 @@ public class TimKiem_GUI extends JFrame {
     }
 
     // 3. THẺ KHÁCH HÀNG (ĐÃ XÓA SỰ KIỆN CLICK POPUP)
-    private JPanel taoTheKhachHang(KhachHang kh) {
+    private JPanel taoTheKhachHang(KhachHangThanhVien kh) {
         JPanel pnlThe = new JPanel();
         pnlThe.setLayout(new BoxLayout(pnlThe, BoxLayout.Y_AXIS));
         pnlThe.setBackground(Color.WHITE);

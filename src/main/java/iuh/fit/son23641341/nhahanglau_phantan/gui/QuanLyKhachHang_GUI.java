@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 import iuh.fit.son23641341.nhahanglau_phantan.control.KhachHang_Ctr; 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 
 // Triển khai giao diện ActionListener
 public class QuanLyKhachHang_GUI extends JFrame implements ActionListener {
@@ -174,10 +174,10 @@ public class QuanLyKhachHang_GUI extends JFrame implements ActionListener {
         ThemKhachHang_Dialog dialog = new ThemKhachHang_Dialog(this);
         dialog.setVisible(true);
 
-        KhachHang khachHangMoi = dialog.getKhachHangMoi();
+        KhachHangThanhVien khachHangThanhVienMoi = dialog.getKhachHangMoi();
 
-        if (khachHangMoi != null) { 
-            boolean success = khControl.themKhachHang(khachHangMoi);
+        if (khachHangThanhVienMoi != null) {
+            boolean success = khControl.themKhachHang(khachHangThanhVienMoi);
 
             if (success) {
                 JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
@@ -198,27 +198,27 @@ public class QuanLyKhachHang_GUI extends JFrame implements ActionListener {
         String maKH = model.getValueAt(selectedRow, 0).toString();
         
         // Lấy đối tượng khách hàng gốc từ danh sách trong Controller
-        KhachHang khachHangGoc = timKhachHangTheoMa(maKH); 
+        KhachHangThanhVien khachHangThanhVienGoc = timKhachHangTheoMa(maKH);
         
-        if (khachHangGoc == null) {
+        if (khachHangThanhVienGoc == null) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy dữ liệu gốc của khách hàng này.", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
         // Mở dialog sửa, truyền Khách hàng gốc vào
-        SuaKhachHang_Dialog dialogSua = new SuaKhachHang_Dialog(this, khachHangGoc);
+        SuaKhachHang_Dialog dialogSua = new SuaKhachHang_Dialog(this, khachHangThanhVienGoc);
         dialogSua.setVisible(true);
         
-        KhachHang khachHangCapNhat = dialogSua.getKhachHangCapNhat(); 
+        KhachHangThanhVien khachHangThanhVienCapNhat = dialogSua.getKhachHangCapNhat();
 
         // Nếu khachHangCapNhat != null, điều này có nghĩa là người dùng đã nhấn nút "Lưu Thay Đổi"
         // và việc cập nhật vào DATABASE đã được thực hiện thành công bên trong SuaKhachHang_Dialog.
-        if (khachHangCapNhat != null) {
+        if (khachHangThanhVienCapNhat != null) {
             // Ta chỉ cần load lại bảng để hiển thị dữ liệu mới nhất từ DB
             loadTableData(model, khControl.getDanhSachKhachHang()); 
             
             // Tùy chọn: chọn lại dòng vừa sửa
-            int rowToSelect = findRowByMaKH(khachHangCapNhat.getMaKhachHang());
+            int rowToSelect = findRowByMaKH(khachHangThanhVienCapNhat.getMaKhachHang());
             if (rowToSelect != -1) {
                 table.setRowSelectionInterval(rowToSelect, rowToSelect);
             }
@@ -258,10 +258,10 @@ public class QuanLyKhachHang_GUI extends JFrame implements ActionListener {
     /**
      * Phương thức trợ giúp: Tìm đối tượng KhachHang gốc từ Mã KH
      */
-    private KhachHang timKhachHangTheoMa(String maKH) {
+    private KhachHangThanhVien timKhachHangTheoMa(String maKH) {
         // Cần đảm bảo maKH được truyền vào không có khoảng trắng thừa
         String trimmedMaKH = maKH.trim(); 
-        for (KhachHang kh : khControl.getDanhSachKhachHang()) {
+        for (KhachHangThanhVien kh : khControl.getDanhSachKhachHang()) {
             if (kh.getMaKhachHang().trim().equals(trimmedMaKH)) {
                 return kh;
             }
@@ -298,7 +298,7 @@ public class QuanLyKhachHang_GUI extends JFrame implements ActionListener {
                     if (text.isEmpty() || isPlaceholder) {
                         loadTableData(model, khControl.getDanhSachKhachHang());
                     } else {
-                        ArrayList<KhachHang> filtered = khControl.timKhachHangTheoSDT(text);
+                        ArrayList<KhachHangThanhVien> filtered = khControl.timKhachHangTheoSDT(text);
                         loadTableData(model, filtered);
                     }
                 });
@@ -315,11 +315,11 @@ public class QuanLyKhachHang_GUI extends JFrame implements ActionListener {
      * Nạp dữ liệu từ ArrayList<KhachHang> lên JTable.
      */
 
-    private void loadTableData(DefaultTableModel model, ArrayList<KhachHang> list) {
+    private void loadTableData(DefaultTableModel model, ArrayList<KhachHangThanhVien> list) {
         model.setRowCount(0); // Xóa dữ liệu cũ
         if (list == null) return;
 
-        for (KhachHang kh : list) {
+        for (KhachHangThanhVien kh : list) {
             Object[] row = new Object[] {
                 kh.getMaKhachHang().trim(), // Loại bỏ khoảng trắng thừa
                 kh.getHoTen(),

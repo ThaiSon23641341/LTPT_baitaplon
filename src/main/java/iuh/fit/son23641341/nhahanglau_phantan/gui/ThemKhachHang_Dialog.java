@@ -1,6 +1,6 @@
 package iuh.fit.son23641341.nhahanglau_phantan.gui;
 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -14,14 +14,14 @@ public class ThemKhachHang_Dialog extends JDialog implements ActionListener {
     private final JTextField txtHoTen, txtSDT, txtEmail, txtDiemSo;
     private final JComboBox<String> cmbGioiTinh, cmbThanhVien;  
     private final JButton btnThem, btnHuy;
-    private KhachHang khachHangMoi = null;
+    private KhachHangThanhVien khachHangThanhVienMoi = null;
 
     /**
      * Lấy đối tượng KhachHang mới được tạo sau khi nút "Thêm" được nhấn.
      * Trả về null nếu người dùng nhấn "Hủy".
      */
-    public KhachHang getKhachHangMoi() {
-        return khachHangMoi;
+    public KhachHangThanhVien getKhachHangMoi() {
+        return khachHangThanhVienMoi;
     }
 
     public ThemKhachHang_Dialog(JFrame parent) {
@@ -205,7 +205,7 @@ public class ThemKhachHang_Dialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnHuy) {
-            khachHangMoi = null; 
+            khachHangThanhVienMoi = null;
             dispose(); 
         } else if (e.getSource() == btnThem) {
             if (validateInputs()) {
@@ -213,7 +213,7 @@ public class ThemKhachHang_Dialog extends JDialog implements ActionListener {
                     // Lấy giá trị Điểm Tích Lũy từ trường, mặc dù nó là "0" và không thể sửa
                     int diemTichLuy = Integer.parseInt(txtDiemSo.getText().trim());
                     
-                    khachHangMoi = new KhachHang(
+                    khachHangThanhVienMoi = new KhachHangThanhVien(
                                 null, // Mã KH sẽ được Controller tạo
                                 txtHoTen.getText().trim(),
                                 txtSDT.getText().trim(),

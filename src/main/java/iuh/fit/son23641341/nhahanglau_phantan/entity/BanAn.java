@@ -1,5 +1,9 @@
 package iuh.fit.son23641341.nhahanglau_phantan.entity;
 
+import lombok.Builder;
+
+@Builder
+
 public class BanAn {
     private int maBan;
     private int soCho;
@@ -25,7 +29,7 @@ public class BanAn {
             trangThai.equals("Đặt trước")) {
             this.trangThai = trangThai;
         } else {
-            this.trangThai = "Trống"; 
+            this.trangThai = "Trống";
         }
         
         this.loaiBan = "Thường"; // Mặc định là bàn thường
@@ -45,7 +49,7 @@ public class BanAn {
             trangThai.equals("Đặt trước"))) {
             this.trangThai = trangThai;
         } else {
-            this.trangThai = "Trống"; 
+            this.trangThai = "Trống";
         }
         
         // Kiểm tra loại bàn (trim khoảng trắng)

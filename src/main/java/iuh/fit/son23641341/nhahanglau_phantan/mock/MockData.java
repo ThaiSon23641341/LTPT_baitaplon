@@ -3,7 +3,7 @@ package iuh.fit.son23641341.nhahanglau_phantan.mock;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.BanAn;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.HoaDon;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.MonAn;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.NhanVien;
@@ -19,7 +19,7 @@ import java.util.Collections;
 import java.util.List;
 
 public final class MockData {
-    private static final List<KhachHang> KHACH_HANGS = new ArrayList<>();
+    private static final List<KhachHangThanhVien> KHACH_HANGS = new ArrayList<>();
     private static final List<NhanVien> NHAN_VIENS = new ArrayList<>();
     private static final List<User> USERS = new ArrayList<>();
     private static final List<MonAn> MON_ANS = new ArrayList<>();
@@ -40,7 +40,7 @@ public final class MockData {
     private MockData() {
     }
 
-    public static List<KhachHang> khachHangs() {
+    public static List<KhachHangThanhVien> khachHangs() {
         return KHACH_HANGS;
     }
 
@@ -72,7 +72,7 @@ public final class MockData {
         return HOA_DONS;
     }
 
-    public static List<KhachHang> khachHangsSnapshot() {
+    public static List<KhachHangThanhVien> khachHangsSnapshot() {
         return new ArrayList<>(KHACH_HANGS);
     }
 
@@ -110,11 +110,11 @@ public final class MockData {
     }
 
     private static void seedKhachHang() {
-        KHACH_HANGS.add(new KhachHang("KH001", "Nguyễn Văn A", "0901234567", "khach1@gmail.com",
+        KHACH_HANGS.add(new KhachHangThanhVien("KH001", "Nguyễn Văn A", "0901234567", "khach1@gmail.com",
             "Nam", "Vàng", 120, LocalDate.now().minusDays(20)));
-        KHACH_HANGS.add(new KhachHang("KH002", "Lê Thị B", "0912345678", "khach2@gmail.com",
+        KHACH_HANGS.add(new KhachHangThanhVien("KH002", "Lê Thị B", "0912345678", "khach2@gmail.com",
             "Nữ", "Bạc", 80, LocalDate.now().minusDays(10)));
-        KHACH_HANGS.add(new KhachHang("KH003", "Phạm Văn C", "0923456789", "khach3@gmail.com",
+        KHACH_HANGS.add(new KhachHangThanhVien("KH003", "Phạm Văn C", "0923456789", "khach3@gmail.com",
             "Nam", "Đồng", 40, LocalDate.now().minusDays(5)));
     }
 

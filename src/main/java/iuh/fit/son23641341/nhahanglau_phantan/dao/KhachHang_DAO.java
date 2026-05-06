@@ -1,12 +1,11 @@
 package iuh.fit.son23641341.nhahanglau_phantan.dao;
 
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
 import iuh.fit.son23641341.nhahanglau_phantan.mock.MockData;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 
 // NOTE: Database logic removed; DAO now uses in-memory mock data.
 public class KhachHang_DAO {
@@ -14,18 +13,18 @@ public class KhachHang_DAO {
     public String getMaKhachHangBySDT(String sdt) {
         return MockData.khachHangs().stream()
             .filter(item -> item.getSoDienThoai().equals(sdt))
-            .map(KhachHang::getMaKhachHang)
+            .map(KhachHangThanhVien::getMaKhachHang)
             .findFirst()
             .orElse(null);
     }
 
-    public ArrayList<KhachHang> getAllKhachHang() {
+    public ArrayList<KhachHangThanhVien> getAllKhachHang() {
         return new ArrayList<>(MockData.khachHangs());
     }
 
     public String taoMaKhachHangMoi() {
         int max = MockData.khachHangs().stream()
-            .map(KhachHang::getMaKhachHang)
+            .map(KhachHangThanhVien::getMaKhachHang)
             .filter(ma -> ma.startsWith("KH"))
             .map(ma -> ma.substring(2))
             .mapToInt(value -> {
@@ -40,9 +39,9 @@ public class KhachHang_DAO {
         return String.format("KH%03d", max + 1);
     }
 
-    public ArrayList<KhachHang> timKhachHangTheoSDT(String sdt) {
-        ArrayList<KhachHang> list = new ArrayList<>();
-        for (KhachHang kh : MockData.khachHangs()) {
+    public ArrayList<KhachHangThanhVien> timKhachHangTheoSDT(String sdt) {
+        ArrayList<KhachHangThanhVien> list = new ArrayList<>();
+        for (KhachHangThanhVien kh : MockData.khachHangs()) {
             if (kh.getSoDienThoai().contains(sdt)) {
                 list.add(kh);
             }
@@ -60,7 +59,7 @@ public class KhachHang_DAO {
             .anyMatch(item -> item.getSoDienThoai().equals(sdt) && !item.getMaKhachHang().equals(maKhachHang));
     }
 
-    public boolean themKhachHang(KhachHang kh) {
+    public boolean themKhachHang(KhachHangThanhVien kh) {
         if (kh == null || existsBySoDienThoai(kh.getSoDienThoai())) {
             return false;
         }
@@ -74,11 +73,11 @@ public class KhachHang_DAO {
         return MockData.khachHangs().add(kh);
     }
 
-    public boolean capNhatKhachHang(KhachHang kh) {
+    public boolean capNhatKhachHang(KhachHangThanhVien kh) {
         if (kh == null) {
             return false;
         }
-        KhachHang existing = MockData.khachHangs().stream()
+        KhachHangThanhVien existing = MockData.khachHangs().stream()
             .filter(item -> item.getMaKhachHang().equals(kh.getMaKhachHang()))
             .findFirst()
             .orElse(null);
@@ -103,7 +102,7 @@ public class KhachHang_DAO {
     }
 
     public boolean congDiemTichLuy(String maKhachHang, int diemCong) {
-        KhachHang existing = MockData.khachHangs().stream()
+        KhachHangThanhVien existing = MockData.khachHangs().stream()
             .filter(item -> item.getMaKhachHang().equals(maKhachHang))
             .findFirst()
             .orElse(null);
@@ -120,7 +119,7 @@ public class KhachHang_DAO {
         }
         return MockData.khachHangs().stream()
             .filter(item -> item.getMaKhachHang().equals(pdb.getMaKhachHang()))
-            .map(KhachHang::getThanhVien)
+            .map(KhachHangThanhVien::getThanhVien)
             .findFirst()
             .orElse(null);
     }

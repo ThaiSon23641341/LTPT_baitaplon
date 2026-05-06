@@ -11,7 +11,7 @@ import iuh.fit.son23641341.nhahanglau_phantan.dao.PhieuDat_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.BanAn;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.HoaDon;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.KhuyenMai;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
 
@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import iuh.fit.son23641341.nhahanglau_phantan.control.PrinterService;
-import java.awt.Desktop;
-import java.io.File;          
+
+import java.io.File;
 
 public class PhieuDat_GUI extends JFrame {
     // Biến lưu trạng thái tạm của form (instance, không static)
@@ -945,7 +945,7 @@ public class PhieuDat_GUI extends JFrame {
                 } else {
                     // 2. Nếu chưa tồn tại -> Thêm mới vào DB
                     String maKH = khachHangCtr.taoMaKhachHangMoi();
-                    KhachHang khMoi = new KhachHang(maKH, tenKH, sdt, email, gioiTinh, "Đồng", 0, LocalDate.now());
+                    KhachHangThanhVien khMoi = new KhachHangThanhVien(maKH, tenKH, sdt, email, gioiTinh, "Đồng", 0, LocalDate.now());
                     
                     boolean themThanhCong = khachHangCtr.themKhachHang(khMoi);
                     if (themThanhCong) {
@@ -1240,7 +1240,7 @@ public class PhieuDat_GUI extends JFrame {
                     } else {
                         // Thêm mới thành viên vào DB
                         String maKH = khachHangCtr.taoMaKhachHangMoi();
-                        KhachHang khMoi = new KhachHang(maKH, tenKhach, sdt, email, gioiTinh, "Đồng", 0, LocalDate.now());
+                        KhachHangThanhVien khMoi = new KhachHangThanhVien(maKH, tenKhach, sdt, email, gioiTinh, "Đồng", 0, LocalDate.now());
                         
                         boolean themThanhCong = khachHangCtr.themKhachHang(khMoi);
                         if (themThanhCong) {

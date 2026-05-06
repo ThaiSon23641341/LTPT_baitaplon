@@ -5,7 +5,7 @@ import java.time.LocalDate;
 /**
  * Lớp KhachHang (Customer) chứa thông tin cơ bản của một khách hàng.
  */
-public class KhachHang {
+public class KhachHangThanhVien {
     private String maKhachHang;     
     private String hoTen;           
     private String soDienThoai;     
@@ -16,10 +16,10 @@ public class KhachHang {
     private LocalDate ngayDangKy;
 
 
-    public KhachHang() {
+    public KhachHangThanhVien() {
     }
 
-    public KhachHang(String maKhachHang, String hoTen, String soDienThoai, String email, String gioiTinh, String thanhVien, int diemTichLuy, LocalDate ngayDangKy) {
+    public KhachHangThanhVien(String maKhachHang, String hoTen, String soDienThoai, String email, String gioiTinh, String thanhVien, int diemTichLuy, LocalDate ngayDangKy) {
         this.maKhachHang = maKhachHang;
         this.hoTen = hoTen;
         this.soDienThoai = soDienThoai;

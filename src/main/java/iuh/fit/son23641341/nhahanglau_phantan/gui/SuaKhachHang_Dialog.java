@@ -1,7 +1,7 @@
 package iuh.fit.son23641341.nhahanglau_phantan.gui;
 
 import iuh.fit.son23641341.nhahanglau_phantan.control.KhachHang_Ctr; // Import Controller
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -16,8 +16,8 @@ public class SuaKhachHang_Dialog extends JDialog implements ActionListener {
     private final JTextField txtMaKH, txtHoTen, txtSDT, txtEmail, txtDiemSo;
     private final JComboBox<String> cmbGioiTinh, cmbThanhVien;
     private final JButton btnLuu, btnHuy;
-    private KhachHang khachHangCapNhat = null;
-    private final KhachHang khachHangGoc;
+    private KhachHangThanhVien khachHangThanhVienCapNhat = null;
+    private final KhachHangThanhVien khachHangThanhVienGoc;
     
     // Thêm đối tượng Controller
     private final KhachHang_Ctr khachHangCtr;
@@ -29,15 +29,15 @@ public class SuaKhachHang_Dialog extends JDialog implements ActionListener {
      * Lấy đối tượng KhachHang đã được cập nhật sau khi nút "Lưu Thay Đổi" được nhấn.
      * Trả về null nếu người dùng nhấn "Hủy".
      */
-    public KhachHang getKhachHangCapNhat() {
-        return khachHangCapNhat;
+    public KhachHangThanhVien getKhachHangCapNhat() {
+        return khachHangThanhVienCapNhat;
     }
 
     // Constructor phải nhận KhachHang cần sửa
-    public SuaKhachHang_Dialog(JFrame parent, KhachHang khachHang) {
+    public SuaKhachHang_Dialog(JFrame parent, KhachHangThanhVien khachHangThanhVien) {
 
         super(parent, "Cập Nhật Khách Hàng", true);
-        this.khachHangGoc = khachHang;
+        this.khachHangThanhVienGoc = khachHangThanhVien;
         this.khachHangCtr = new KhachHang_Ctr(); // Khởi tạo Controller
         
         setSize(550, 550);
@@ -129,7 +129,7 @@ public class SuaKhachHang_Dialog extends JDialog implements ActionListener {
         // Ngày ĐK (Label only)
         JLabel lblNgayDK = createStyledLabel("Ngày ĐK:", labelFont);
         lblNgayDK.setBounds(startX, currentY, labelWidth, height);
-        JLabel lblNgayDKValue = new JLabel(khachHang.getNgayDangKy() != null ? khachHang.getNgayDangKy().format(dateFormatter) : "N/A");
+        JLabel lblNgayDKValue = new JLabel(khachHangThanhVien.getNgayDangKy() != null ? khachHangThanhVien.getNgayDangKy().format(dateFormatter) : "N/A");
         lblNgayDKValue.setFont(new Font("Arial", Font.ITALIC, 13));
         lblNgayDKValue.setForeground(new Color(231, 76, 60));
         lblNgayDKValue.setBounds(startX + labelWidth, currentY, fieldWidth, height);
@@ -181,16 +181,16 @@ public class SuaKhachHang_Dialog extends JDialog implements ActionListener {
      */
 
     private void dienDuLieuGoc() {
-        if (khachHangGoc != null) {
-            txtMaKH.setText(khachHangGoc.getMaKhachHang().trim());
-            txtHoTen.setText(khachHangGoc.getHoTen());
-            txtSDT.setText(khachHangGoc.getSoDienThoai().trim());
-            txtEmail.setText(khachHangGoc.getEmail());
+        if (khachHangThanhVienGoc != null) {
+            txtMaKH.setText(khachHangThanhVienGoc.getMaKhachHang().trim());
+            txtHoTen.setText(khachHangThanhVienGoc.getHoTen());
+            txtSDT.setText(khachHangThanhVienGoc.getSoDienThoai().trim());
+            txtEmail.setText(khachHangThanhVienGoc.getEmail());
             // Giữ nguyên giá trị Điểm Tích Lũy gốc
-            txtDiemSo.setText(String.valueOf(khachHangGoc.getDiemTichLuy()));
+            txtDiemSo.setText(String.valueOf(khachHangThanhVienGoc.getDiemTichLuy()));
             
-            String gioiTinh = khachHangGoc.getGioiTinh().trim();
-            String thanhVien = khachHangGoc.getThanhVien().trim();
+            String gioiTinh = khachHangThanhVienGoc.getGioiTinh().trim();
+            String thanhVien = khachHangThanhVienGoc.getThanhVien().trim();
             
             cmbGioiTinh.setSelectedItem(gioiTinh);
             cmbThanhVien.setSelectedItem(thanhVien);
@@ -239,7 +239,7 @@ public class SuaKhachHang_Dialog extends JDialog implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnHuy) {
-            khachHangCapNhat = null;
+            khachHangThanhVienCapNhat = null;
             dispose();
         } else if (e.getSource() == btnLuu) {
             if (validateInputs()) {
@@ -247,7 +247,7 @@ public class SuaKhachHang_Dialog extends JDialog implements ActionListener {
                 String sdtMoi = txtSDT.getText().trim();
                 
                 // BƯỚC 1: Kiểm tra trùng SDT với khách hàng khác (trừ chính nó)
-                if (khachHangCtr.kiemTraTrungSDTKhac(sdtMoi, khachHangGoc.getMaKhachHang())) {
+                if (khachHangCtr.kiemTraTrungSDTKhac(sdtMoi, khachHangThanhVienGoc.getMaKhachHang())) {
                     JOptionPane.showMessageDialog(this, "Số điện thoại " + sdtMoi + " đã bị trùng với khách hàng khác.", "Lỗi trùng lặp", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -257,16 +257,16 @@ public class SuaKhachHang_Dialog extends JDialog implements ActionListener {
                 
                 try {
                     // Cập nhật Entity gốc với dữ liệu mới
-                    khachHangGoc.setHoTen(txtHoTen.getText().trim());
-                    khachHangGoc.setSoDienThoai(sdtMoi);
-                    khachHangGoc.setEmail(txtEmail.getText().trim());
-                    khachHangGoc.setGioiTinh(((String) cmbGioiTinh.getSelectedItem()).trim());
+                    khachHangThanhVienGoc.setHoTen(txtHoTen.getText().trim());
+                    khachHangThanhVienGoc.setSoDienThoai(sdtMoi);
+                    khachHangThanhVienGoc.setEmail(txtEmail.getText().trim());
+                    khachHangThanhVienGoc.setGioiTinh(((String) cmbGioiTinh.getSelectedItem()).trim());
                     
                     // BƯỚC 2: Gọi phương thức cập nhật vào Database
-                    boolean success = khachHangCtr.capNhatKhachHang(khachHangGoc);
+                    boolean success = khachHangCtr.capNhatKhachHang(khachHangThanhVienGoc);
 
                     if (success) {
-                        khachHangCapNhat = khachHangGoc; // Gán lại để lấy kết quả
+                        khachHangThanhVienCapNhat = khachHangThanhVienGoc; // Gán lại để lấy kết quả
                         JOptionPane.showMessageDialog(this, "Cập nhật khách hàng thành công!", "Thành công", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
                     } else {

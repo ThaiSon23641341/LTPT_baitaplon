@@ -12,7 +12,7 @@ public class HoaDon {
     private String maKhuyenMai;  
     private String loaiHoaDon;    
     private Time gioLapHoaDon;
-    private KhachHang khachHang;
+    private KhachHangThanhVien khachHangThanhVien;
     private KhuyenMai khuyenMai;
 
     // ================= CONSTRUCTORS =================
@@ -139,12 +139,12 @@ public class HoaDon {
         this.gioLapHoaDon = gioLapHoaDon;
     }
 
-    public KhachHang getKhachHang() {
-        return khachHang;
+    public KhachHangThanhVien getKhachHang() {
+        return khachHangThanhVien;
     }
 
-    public void setKhachHang(KhachHang khachHang) {
-        this.khachHang = khachHang;
+    public void setKhachHang(KhachHangThanhVien khachHangThanhVien) {
+        this.khachHangThanhVien = khachHangThanhVien;
     }
 
     public KhuyenMai getKhuyenMai() {

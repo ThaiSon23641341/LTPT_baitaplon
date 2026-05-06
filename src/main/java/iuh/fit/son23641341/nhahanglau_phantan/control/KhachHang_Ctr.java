@@ -2,7 +2,7 @@ package iuh.fit.son23641341.nhahanglau_phantan.control;
 
 import iuh.fit.son23641341.nhahanglau_phantan.dao.KhachHang_DAO;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.ChiTietDatMon;
-import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHang;
+import iuh.fit.son23641341.nhahanglau_phantan.entity.KhachHangThanhVien;
 import iuh.fit.son23641341.nhahanglau_phantan.entity.PhieuDatBan;
 
 import java.time.LocalDate;
@@ -12,39 +12,39 @@ import java.util.ArrayList;
 public class KhachHang_Ctr {
 
     private KhachHang_DAO khachHangDAO;
-    private ArrayList<KhachHang> danhSachKhachHang;
+    private ArrayList<KhachHangThanhVien> danhSachKhachHangThanhVien;
 
     public KhachHang_Ctr() {
         khachHangDAO = new KhachHang_DAO();
-        danhSachKhachHang = khachHangDAO.getAllKhachHang(); 
+        danhSachKhachHangThanhVien = khachHangDAO.getAllKhachHang();
     }
 
-    public ArrayList<KhachHang> getDanhSachKhachHang() {
-        this.danhSachKhachHang = khachHangDAO.getAllKhachHang(); 
-        return danhSachKhachHang;
+    public ArrayList<KhachHangThanhVien> getDanhSachKhachHang() {
+        this.danhSachKhachHangThanhVien = khachHangDAO.getAllKhachHang();
+        return danhSachKhachHangThanhVien;
     }
     
     /**
      * Thêm khách hàng mới vào Database.
-     * @param khachHangMoi Đối tượng KhachHang mới
+     * @param khachHangThanhVienMoi Đối tượng KhachHang mới
      * @return true nếu thêm thành công, false nếu thất bại (ví dụ: trùng SDT)
      */
-    public boolean themKhachHang(KhachHang khachHangMoi) {
-        if (khachHangMoi == null) {
+    public boolean themKhachHang(KhachHangThanhVien khachHangThanhVienMoi) {
+        if (khachHangThanhVienMoi == null) {
             System.err.println("LOI: Đối tượng Khách hàng rỗng.");
             return false;
         }
         
         // 1. Kiểm tra trùng lặp Số Điện Thoại
-        if (khachHangDAO.existsBySoDienThoai(khachHangMoi.getSoDienThoai())) {
-            System.err.println("THEM KH THAT BAI: Số điện thoại " + khachHangMoi.getSoDienThoai() + " đã tồn tại.");
+        if (khachHangDAO.existsBySoDienThoai(khachHangThanhVienMoi.getSoDienThoai())) {
+            System.err.println("THEM KH THAT BAI: Số điện thoại " + khachHangThanhVienMoi.getSoDienThoai() + " đã tồn tại.");
             return false; 
         }
         
         // **BƯỚC QUAN TRỌNG:** Tự sinh và gán Mã Khách Hàng mới trước khi insert
         String maKhachHangMoi = khachHangDAO.taoMaKhachHangMoi();
         try {
-            khachHangMoi.setMaKhachHang(maKhachHangMoi);
+            khachHangThanhVienMoi.setMaKhachHang(maKhachHangMoi);
         } catch (Exception e) {
             System.err.println("LOI: Không thể gán Mã Khách hàng mới (Entity KhachHang cần có setter cho MaKhachHang).");
             e.printStackTrace();
@@ -53,13 +53,13 @@ public class KhachHang_Ctr {
         
         // Gán Ngày Đăng Ký 
         try {
-            khachHangMoi.setNgayDangKy(LocalDate.now()); 
+            khachHangThanhVienMoi.setNgayDangKy(LocalDate.now());
         } catch (IllegalArgumentException ignored) {}
         
         // 2. Thực hiện thêm vào DB
-        boolean success = khachHangDAO.themKhachHang(khachHangMoi);
+        boolean success = khachHangDAO.themKhachHang(khachHangThanhVienMoi);
         if (success) {
-               System.out.println("THEM KH THANH CONG: Đã thêm khách hàng " + khachHangMoi.getHoTen() + " với Mã KH: " + maKhachHangMoi);
+               System.out.println("THEM KH THANH CONG: Đã thêm khách hàng " + khachHangThanhVienMoi.getHoTen() + " với Mã KH: " + maKhachHangMoi);
         } else {
              System.err.println("THEM KH THAT BAI: Lỗi DB khi thực thi INSERT.");
         }
@@ -67,7 +67,7 @@ public class KhachHang_Ctr {
     }
 
 
-    public ArrayList<KhachHang> timKhachHangTheoSDT(String query) {
+    public ArrayList<KhachHangThanhVien> timKhachHangTheoSDT(String query) {
         if (query == null || query.trim().isEmpty()) {
             return khachHangDAO.getAllKhachHang();
         }
@@ -88,11 +88,11 @@ public class KhachHang_Ctr {
 
     /**
      * Cập nhật thông tin của một khách hàng.
-     * @param khachHangCapNhat Đối tượng KhachHang chứa thông tin mới (phải có Mã KH)
+     * @param khachHangThanhVienCapNhat Đối tượng KhachHang chứa thông tin mới (phải có Mã KH)
      * @return true nếu cập nhật thành công, false nếu Mã KH không tồn tại hoặc lỗi DB.
      */
-    public boolean capNhatKhachHang(KhachHang khachHangCapNhat) {
-        if (khachHangCapNhat == null || khachHangCapNhat.getMaKhachHang() == null || khachHangCapNhat.getMaKhachHang().trim().isEmpty()) {
+    public boolean capNhatKhachHang(KhachHangThanhVien khachHangThanhVienCapNhat) {
+        if (khachHangThanhVienCapNhat == null || khachHangThanhVienCapNhat.getMaKhachHang() == null || khachHangThanhVienCapNhat.getMaKhachHang().trim().isEmpty()) {
             System.err.println("LOI: Đối tượng Khách hàng cần cập nhật rỗng hoặc thiếu Mã KH.");
             return false;
         }
@@ -101,9 +101,9 @@ public class KhachHang_Ctr {
         // nên ta bỏ qua bước này trong Controller để tránh gọi 2 lần.**
         
         // 2. Cập nhật vào DB
-        boolean success = khachHangDAO.capNhatKhachHang(khachHangCapNhat);
+        boolean success = khachHangDAO.capNhatKhachHang(khachHangThanhVienCapNhat);
           if (success) {
-            System.out.println("SUA KH THANH CONG: Đã cập nhật khách hàng Mã: " + khachHangCapNhat.getMaKhachHang());
+            System.out.println("SUA KH THANH CONG: Đã cập nhật khách hàng Mã: " + khachHangThanhVienCapNhat.getMaKhachHang());
         } else {
             System.err.println("SUA KH THAT BAI: Không tìm thấy Mã KH hoặc lỗi DB khi thực thi UPDATE.");
         }
